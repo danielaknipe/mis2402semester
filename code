@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+	<style> .btn{border:10px solid darkblue; padding:5px;display:inline-block} 
+			body{background-color: rgb(188, 214, 229);}</style>
+</head>
+<body>
+	<div class="container">
+		<br></br>
+		<h1>Business Licenses in Orlando, Florida</h1>
+		<h3>In the tropical city of Orlando, there are many businesses that arise due to tourists going there. 
+			From taking the business tax receipts, we can determine a lot of data, such as this line graph. It 
+			shows the trend on the amount of businesses licenses opened from 2000-2023. </h3>
+			<br>
+		<form>
+			<input type="button" value="Show the line chart" id="btn_1">
+		</form>
+		<br><br><br>
+		<div id="output"></div>
+		<br>
+		<h3>With taking the information, we can compare the amount of 
+			licenses that are implemented from 5 categories with a bar chart: </h3>
+			<p>	
+				<b>	<li>Peddlers</li>
+					<li>Professional</li>
+					<li>Merchants</li>
+					<li>Contractors</li>
+					<li>Service</li></b>
+			</p>
+		<form>
+			<input type ='button' value = "Show the bar chart" id = 'btn_2'>
+		</form>
+		<br><br><br>
+		<div id="output2"></div>
+		<br>
+	</div>
+</body>
+<script>
+
+// Some notes.  
+//
+// In this example we will explore the relationship between area and population
+// for the top 20 most populated countries.
+//
+// The data will be retreived from a Web Service found at this url:
+// https://restcountries.com/v3.1/all
+//  
+// To get the result we want, we can't just work with the data as it comes from the source.
+//
+// We need to first put the data we want into a new format.  It helps to throw away
+// the data attributes we don't need and keep only the ones that are useful.
+// 
+// To determine which of the 250 countries has the greatest population we'll take this
+// strategy: sort the data by population from highest to lowest, then inspect the first
+// 20 records.
+//
+// Sorting in JavaScript is tricky.  It's best to use a 2 dimensional array 
+// that is numerically indexed in both dimensions.
+//
+// This (with imaginary data) is the structure what we want:
+// [
+//	[99999999, 8888880, "The People's Country"]
+//	[9999999, 999999, "Free Landia"],
+//	[9999900, 99000, "Terra Nostra"],
+//	[9999700, 90000, "Oceana"],
+//	[9999600, 9000, "The Province of Sealand"],
+// ]
+//
+// In the example above "The People's Country" has the biggest population (99999999).
+// It also has the biggest land mass /area (8888880). To get the population
+// density of "The People's Country" you would divide the population by the area.
+//
+// Once we have the data, we will want to manipulate portions of the
+// URL to the image chart.
+//
+// The linebreaks have been added to the URL to make this it more readable.
+//
+/* 
+Original URL from image-charts testing
+
+https://image-charts.com/chart?
+chco=3072F3,ff0000&
+chd=a:10,20,40,80,90,95,99|20,30,40,50,60,70,80&
+chdl=Ponies|Unicorns&
+chdlp=t&
+chls=2,4,1&
+chs=700x500&
+cht=lc&
+chxt=x,y
+
+*/
+//
+// The URL we build is to be used as the src attribute 
+// of the HTML img tag.
+// 
+
+//Supporting Functions 
+
+function getTheData(){
+	console.log("Here we go get the data...");
+
+	$.getJSON('https://data.cityoforlando.net/resource/g89y-q5ja.json?$query=SELECT%0A%20%20%60licenseno%60%2C%0A%20%20%60businessname%60%2C%0A%20%20%60last_issdtfmt%60%2C%0A%20%20%60inactvdtfmt%60%2C%0A%20%20%60licstatus%60%2C%0A%20%20%60last_renew_dt%60%2C%0A%20%20%60next_renew_dt%60%2C%0A%20%20%60max_year%60%2C%0A%20%20%60min_open%60%2C%0A%20%20%60years_inactive%60%2C%0A%20%20%60years_open%60%2C%0A%20%20%60business_phone%60%2C%0A%20%20%60busowner_name%60%2C%0A%20%20%60open_yr%60%2C%0A%20%20%60lictype%60%2C%0A%20%20%60neighborhood%60%2C%0A%20%20%60license_date%60%2C%0A%20%20%60application_milestone%60', function(result){
+	console.log(result); 
+	let count00 = 0;
+	let count01 = 0;
+	let count02 = 0;
+	let count03 = 0;
+	let count04 = 0;
+	let count05 = 0;
+	let count06 = 0;
+	let count07 = 0;
+	let count08 = 0;
+	let count09 = 0;
+	let count10 = 0;
+	let count11 = 0;
+	let count12 = 0;
+	let count13 = 0;
+	let count14 = 0;
+	let count15 = 0;
+	let count16 = 0;
+	let count17 = 0;
+	let count18 = 0;
+	let count19 = 0;
+	let count20 = 0;
+	let count21 = 0;
+	let count22 = 0;
+	let count23 = 0;
+
+	for(let i=0;i <result.length;i++){
+		let year = result[i]["open_yr"];
+			if (year == "2000"){
+				count00++;
+			} 
+			else if (year == "2001"){
+				count01++;
+			}
+			else if (year == "2002"){
+				count02++;
+			}
+			else if (year == "2003"){
+				count03++;
+			}
+			else if (year == "2004"){
+				count04++;
+			}
+			else if (year == "2005"){
+				count05++;
+			}
+			else if (year == "2006"){
+				count06++;
+			}
+			else if (year == "2007"){
+				count07++;
+			}
+			else if (year == "2008"){
+				count08++;
+			}
+			else if (year == "2009"){
+				count09++;
+			}
+			else if (year == "2010"){
+				count10++;
+			}
+			else if (year == "2011"){
+				count11++;
+			}
+			else if (year == "2012"){
+				count12++;
+			}
+			else if (year == "2013"){
+				count13++;
+			}
+			else if (year == "2014"){
+				count14++;
+			}
+			else if (year == "2015"){
+				count15++;
+			}
+			else if (year == "2016"){
+				count16++;
+			}
+			else if (year == "2017"){
+				count17++;
+			}
+			else if (year == "2018"){
+				count18++;
+			}
+			else if (year == "2019"){
+				count19++;
+			}
+			else if (year == "2020"){
+				count20++;
+			}
+			else if (year == "2021"){
+				count21++;
+			}
+			else if (year == "2022"){
+				count22++;
+			}
+			else if (year == "2023"){
+				count23++;
+			}
+		
+		};
+
+		let data = [
+			["2000", count00],
+			["2001", count01],
+			["2002", count02],
+			["2003", count03],
+			["2004", count04],
+			["2005", count05],
+			["2006", count06],
+			["2007", count07],
+			["2008", count08],
+			["2009", count09],
+			["2010", count10],
+			["2011", count11],
+			["2012", count12],
+			["2013", count13],
+			["2014", count14],
+			["2015", count15],
+			["2016", count16],
+			["2017", count17],
+			["2018", count18],
+			["2019", count19],
+			["2020", count20],
+			["2021", count21],
+			["2022", count22],
+			["2023", count23],
+		];
+
+
+		console.log(data);
+		plotTheChart(data);
+	})
+
+
+}
+function plotTheChart(data) {
+
+	let years = ""; 
+	for (let i=0; i<23; i++){
+		years = years + data[i][0];
+		if(i<22){
+			years = years + "|";
+		}
+	}
+
+	let counts = ""; 
+	for (let i=0; i<23; i++){
+		counts = counts + data[i][1];
+		if(i<22){
+			counts = counts + ",";
+		}
+	}
+
+    let imageurl = "https://image-charts.com/chart?"
+    imageurl = imageurl + "chco=3072F3,ff0000,00ff00&"
+    imageurl = imageurl + "chd=a:" + counts + "&"
+    imageurl = imageurl + "chdl=Amount of Businesses Opened&"
+    imageurl = imageurl + "chdlp=t&"
+    imageurl = imageurl + "chl=" + years + "&"
+    imageurl = imageurl + "chls=2,4,1&"
+    imageurl = imageurl + "chs=900x500&"
+    imageurl = imageurl + "cht=lc&"
+    imageurl = imageurl + "chxt=x,y"
+
+    console.log(imageurl);
+
+    $("#output").html("<img src='" + imageurl + "'>");
+}
+
+
+function getTheBarData(){
+	console.log("Here we go get the data...");
+
+	$.getJSON("https://data.cityoforlando.net/resource/g89y-q5ja.json?$query=SELECT%0A%20%20%60licenseno%60%2C%0A%20%20%60businessname%60%2C%0A%20%20%60last_issdtfmt%60%2C%0A%20%20%60inactvdtfmt%60%2C%0A%20%20%60licstatus%60%2C%0A%20%20%60last_renew_dt%60%2C%0A%20%20%60next_renew_dt%60%2C%0A%20%20%60max_year%60%2C%0A%20%20%60min_open%60%2C%0A%20%20%60years_inactive%60%2C%0A%20%20%60years_open%60%2C%0A%20%20%60business_phone%60%2C%0A%20%20%60busowner_name%60%2C%0A%20%20%60open_yr%60%2C%0A%20%20%60lictype%60%2C%0A%20%20%60neighborhood%60%2C%0A%20%20%60license_date%60%2C%0A%20%20%60application_milestone%60", function(result){
+		console.log(result);
+
+		let PeddleAmt = 0;
+		let ProfesAmt = 0;
+		let MercntAmt = 0;
+		let ContraAmt = 0;
+		let SerrepAmt = 0;
+
+		for (let i=0; i < 500; i++){
+			let type = result[i]["lictype"];
+			if (type == "PEDDLE"){
+				PeddleAmt ++;
+			}
+			else if (type == "PROFES"){
+				ProfesAmt++;
+			}
+			else if (type == "MERCNT"){
+				MercntAmt++;
+			}
+			else if (type == "CONTRA"){
+				ContraAmt++;
+			}
+			else if (type == "SERREP"){
+				SerrepAmt++;
+			}
+		}
+
+		let Bardata = [
+			["PEDDLE", PeddleAmt],
+			["PROFES", ProfesAmt],
+			["MERCNT", MercntAmt],
+			["CONTRA", ContraAmt],
+			["SERREP", SerrepAmt],
+
+		];
+		
+	
+
+		Bardata.sort(function(pos1, pos2){return pos2[0] - pos1[0]});
+		console.log(Bardata);
+
+		plotTheBarChart(Bardata);
+	})
+};
+
+function plotTheBarChart(Bardata){
+	
+	Bardata.sort((a,b) => b[1]-a[1]);
+
+	let imageurl = "https://image-charts.com/chart?"
+	imageurl = imageurl + "chco=7d2727|eba35c|d0ac3b|f2c381|df8222&"
+	imageurl = imageurl + "chd=t:" + Bardata[0][1] + "," + Bardata[1][1] + ","  + Bardata[2][1] + ","  + Bardata[3][1] + "," + Bardata[4][1] + "&"
+	imageurl = imageurl + "chds=0," + Math.max(...Bardata.map(item => item [1])) +  "&"
+	imageurl = imageurl + "chs=700x700&"
+	imageurl = imageurl + "cht=bvs&"
+	imageurl = imageurl + "chxl=1:|" + Bardata[0][0] + "|" +  Bardata[1][0] + "|" +  Bardata[2][0] + "|" +  Bardata[3][0] + "|" +  Bardata[4][0] + "&"
+	imageurl = imageurl + "chxt=y,x";
+
+	console.log(imageurl);
+
+	$("#output2").html("<img src='" + imageurl + "'>"); 
+
+}
+
+
+
+//click event handlers
+
+$('#btn_1').click(function(){
+	getTheData();
+})
+
+$('#btn_2').click(function(){
+	getTheBarData();
+})
+
+
+/// LINK FOR MY API PROJECT : https://data.cityoforlando.net/resource/7388-4re5.json?$query=SELECT%0A%20%20%60business_open_date%60%2C%0A%20%20%60case_number%60%2C%0A%20%20%60last_licensed_issue_date%60%2C%0A%20%20%60license_status%60%2C%0A%20%20%60business_name%60%2C%0A%20%20%60business_address%60%2C%0A%20%20%60business_owner_name%60%2C%0A%20%20%60business_mailing_address%60%2C%0A%20%20%60phone%60%2C%0A%20%20%60license_type%60%2C%0A%20%20%60received_date%60%2C%0A%20%20%60geocoded_column%60%2C%0A%20%20%60%3A%40computed_region_u8wz_9eai%60%2C%0A%20%20%60%3A%40computed_region_bgqw_styj%60%2C%0A%20%20%60%3A%40computed_region_gsfg_ku74%60%0AORDER%20BY%20%60business_open_date%60%20DESC%20NULL%20LAST
+
+</script>
+</html>
